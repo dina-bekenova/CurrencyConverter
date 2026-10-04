@@ -1,5 +1,7 @@
 # Currency Converter
 
+## What it does
+
 A small HTTP service that converts money between currencies. Exchange rates are
 hard-coded (not live), so the service needs no internet and no API keys.
 
@@ -9,7 +11,7 @@ Written in Python 3, standard library only — nothing to install.
 
 | Method | Path | What it returns |
 |---|---|---|
-| GET | `/` | Greeting and usage hint |
+| GET | `/` | Greeting |
 | GET | `/healthz` | `{"status": "ok"}` — health check |
 | GET | `/rates` | All rates relative to KZT |
 | GET | `/convert?from=USD&to=KZT&amount=100` | Conversion result (`to` defaults to KZT) |

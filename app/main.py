@@ -2,7 +2,6 @@ import json
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
-
 RATES_TO_KZT = {
     "KZT": 1.0,
     "USD": 480.0,

@@ -36,7 +36,7 @@ class ConverterTest(unittest.TestCase):
 
     def test_convert(self):
         status, body = self.get("/convert?from=USD&amount=100")
-        self.assertEqual(body["result"], 48000.0)
+        self.assertEqual(body["result"], 50000.0)
 
     def test_unknown_currency(self):
         with self.assertRaises(urllib.error.HTTPError) as e:

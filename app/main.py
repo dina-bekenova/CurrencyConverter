@@ -31,7 +31,7 @@ class Handler(BaseHTTPRequestHandler):
         query = parse_qs(url.query)
 
         if url.path == "/":
-            self.send_json(200, {"message": "Currency converter"})
+            self.send_json(200, {"message": os.environ.get("GREETING", "Currency converter")})
         elif url.path == "/healthz":
             self.send_json(200, {"status": "ok"})
         elif url.path == "/rates":

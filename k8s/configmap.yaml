@@ -1,0 +1,8 @@
+# M4: settings outside the image. Values are always text: keep the quotes.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: currency-config            # 20
+data:
+  PORT: "8080"                     # 21
+  GREETING: "Currency converter on Kubernetes"   # 22

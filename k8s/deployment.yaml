@@ -1,0 +1,72 @@
+# M4: CurrencyConverter on Kubernetes.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency                     # 1
+spec:
+  replicas: 2                        # 2. one may fail while one serves
+  selector:
+    matchLabels:
+      app: currency                  # 3
+  template:
+    metadata:
+      labels:
+        app: currency                # 4. the same as 3
+    spec:
+      securityContext:
+        runAsNonRoot: true           # 5. Dockerfile has USER 1000:1000 (week 5)
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: app
+          # 6. the FULL SHA of the main commit whose CI run published the image
+          image: ghcr.io/dina-bekenova/currencyconverter:6ea86f9cbc980d4c87fc9b4f6df507d3f6fca1a4
+          ports:
+            - name: http
+              containerPort: 8080    # 7. the same as PORT in configmap.yaml
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: currency-config   # 8
+                  key: PORT
+            - name: GREETING              # 9. app/main.py returns it on GET /
+              valueFrom:
+                configMapKeyRef:
+                  name: currency-config
+                  key: GREETING
+            - name: API_KEY               # 10
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: API_KEY
+          readinessProbe:
+            httpGet:
+              path: /healthz         # 11
+              port: http             # 12
+            periodSeconds: 5
+            failureThreshold: 3      # 5 x 3 = 15 s
+          livenessProbe:
+            httpGet:
+              path: /healthz         # 13
+              port: http             # 14
+            periodSeconds: 10        # 15. 10 x 3 = 30 s > 15 s: readiness notices first
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m               # 16
+              memory: 64Mi           # 17
+            limits:
+              cpu: 250m              # 18
+              memory: 128Mi          # 19
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}

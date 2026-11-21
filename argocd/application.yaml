@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: CurrencyConverter                     # 1. this app's name in Argo CD, e.g. notes
+  name: currency                    # 1. this app's name in Argo CD, e.g. notes
   namespace: argocd                # 2. the namespace where Argo CD looks for Applications
 spec:
   project: default               # Argo CD's built-in project (the marker uses a strict one)

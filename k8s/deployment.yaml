@@ -20,7 +20,7 @@ spec:
       containers:
         - name: app
           # 6. the FULL SHA of the main commit whose CI run published the image
-          image: ghcr.io/dina-bekenova/currencyconverter:6ea86f9cbc980d4c87fc9b4f6df507d3f6fca1a4
+          image: ghcr.io/dina-bekenova/currencyconverter:786d5d7dda72bd44b0cda8a757ddab1ed1805d17
           ports:
             - name: http
               containerPort: 8080    # 7. the same as PORT in configmap.yaml

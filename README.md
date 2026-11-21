@@ -42,3 +42,15 @@ scripts/test.sh
 ```
 
 Prints a summary line like `TESTS: 5/5` and exits 0 when all tests pass.
+
+## Rollback
+
+Argo CD deploys what is on the `____` branch, from the `____` folder.
+To roll back, undo the commit that deployed the bad version, with a new commit:
+
+    git log --oneline -- k8s
+    git revert <commit> 
+    git push
+
+Argo CD deploys the previous version within three minutes. Do not use
+`kubectl rollout undo`: self-heal would put the bad version back.
